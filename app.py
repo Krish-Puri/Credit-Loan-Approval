@@ -106,3 +106,12 @@ def scale_credit_score(user_score, real_min=300, real_max=900, dataset_min=0, da
 
 def scale_income(user_income, real_min=0, real_max=100000000, dataset_min=0, dataset_max=100000):
     return ((user_income - real_min) / (real_max - real_min)) * (dataset_max - dataset_min) + dataset_min
+
+
+def predict_loan_approval(data):
+    preprocessor = joblib.load(open('loan_preprocessor.pkl','rb'))
+    final_data = preprocessor.transform(data)
+    model = joblib.load(open('loan_model.pkl', 'rb'))
+    prediction = model.predict(final_data)  
+    confidence = model.predict_proba(final_data)[0].max() * 100
+    return bool(prediction[0]), confidence
