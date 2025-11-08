@@ -89,3 +89,10 @@ if 'credit_data' not in st.session_state:
 if 'loan_data' not in st.session_state:
     st.session_state.loan_data = None
 
+def predict_credit_approval(data):
+    preprocessor = joblib.load(open('preprocessor.pkl','rb'))
+    final_data = preprocessor.transform(data)
+    model = joblib.load(open('model.pkl', 'rb'))
+    prediction = model.predict(final_data)
+    confidence = model.predict_proba(final_data)[0].max() * 100
+    return prediction[0], confidence
