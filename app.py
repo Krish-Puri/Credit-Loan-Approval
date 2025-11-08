@@ -10,3 +10,11 @@ warnings.filterwarnings("ignore")
 import shap
 import matplotlib.pyplot as plt
 import xgboost
+
+#Page configuration
+st.set_page_config(
+  page_title="CredLo - AI Credit & Loan Approval Assistant",
+  page_icon="🏦",
+  layout="wide",
+  initial_sidebar_state="expanded"
+)
