@@ -115,3 +115,13 @@ def predict_loan_approval(data):
     prediction = model.predict(final_data)  
     confidence = model.predict_proba(final_data)[0].max() * 100
     return bool(prediction[0]), confidence
+
+def get_loan_explaination(data):
+    preprocessor = joblib.load(open('loan_preprocessor.pkl','rb'))
+    final_data = preprocessor.transform(data)
+    feature_names = preprocessor.get_feature_names_out()
+
+    sample = pd.DataFrame(final_data,columns=feature_names)
+    explainer = joblib.load(open('loan_explainer.pkl','rb'))
+    shap_values = explainer(sample)
+    return shap_values
