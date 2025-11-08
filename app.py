@@ -96,3 +96,13 @@ def predict_credit_approval(data):
     prediction = model.predict(final_data)
     confidence = model.predict_proba(final_data)[0].max() * 100
     return prediction[0], confidence
+
+
+def scale_debt(user_debt, real_min=0, real_max=10000000, dataset_min=0, dataset_max=28):
+    return ((user_debt - real_min) / (real_max - real_min)) * (dataset_max - dataset_min) + dataset_min  
+    
+def scale_credit_score(user_score, real_min=300, real_max=900, dataset_min=0, dataset_max=67):
+    return ((user_score - real_min) / (real_max - real_min)) * (dataset_max - dataset_min) + dataset_min
+
+def scale_income(user_income, real_min=0, real_max=100000000, dataset_min=0, dataset_max=100000):
+    return ((user_income - real_min) / (real_max - real_min)) * (dataset_max - dataset_min) + dataset_min
