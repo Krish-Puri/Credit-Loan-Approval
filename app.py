@@ -142,4 +142,30 @@ def get_loan_top_features(data):
 
     return feature_importance
 
+def get_credit_explaination(data):
+    preprocessor = joblib.load(open('preprocessor.pkl','rb'))
+    final_data = preprocessor.transform(data)
+    feature_names = preprocessor.get_feature_names_out()
+
+    sample = pd.DataFrame(final_data,columns=feature_names)
+    explainer = joblib.load(open('credit_explainer.pkl','rb'))
+    shap_values = explainer(sample)
+    return shap_values
+
+def get_credit_top_features(data):
+    preprocessor = joblib.load(open('preprocessor.pkl','rb'))
+    final_data = preprocessor.transform(data)
+    feature_names = preprocessor.get_feature_names_out()
+
+    sample = pd.DataFrame(final_data,columns=feature_names)
+    explainer = joblib.load(open('credit_explainer.pkl','rb'))
+    shap_values = explainer.shap_values(sample)
+
+    feature_importance = pd.DataFrame({
+        'Feature': sample.columns,
+        'Feature Value': shap_values[0]
+    }).sort_values(by='Feature Value', key=abs, ascending=False)
+
+    return feature_importance
+
 
